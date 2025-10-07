@@ -31,4 +31,4 @@ Proceed to the questions and solutions in [tasks](/tasks/) folder.
   - SQL scripts are included in the repository:
     - [01_ddl_schema.sql](01_ddl_schema.sql) — contains all CREATE TABLE statements that define the database schema,
     - [02_mock_data.sql](02_mock_data.sql) — contains all INSERT INTO statements that populate the tables with mock data for analysis,
-    - queries/ — folder with individual analytical SQL script.
+    - tasks/ — folder with solutions.
