@@ -1,5 +1,5 @@
 /*
-Task: Which channel brings the highest LTV (Lifetime Value)?
+Which channel brings the highest LTV (Lifetime Value)?
 Compare 30-day customer value across acquisition channels.
 */
 
