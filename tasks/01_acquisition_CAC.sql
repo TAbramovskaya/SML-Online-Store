@@ -1,5 +1,6 @@
 /*
 Which channel is the most efficient by CAC (Customer Acquisition Cost)?
+Calculate the customer acquisition cost for each channel.
 */
 
 select 
@@ -27,6 +28,7 @@ Result:
     search |   0.00|
     display|   0.00|
 
+Comments:
 According to the data, new users are most effectively acquired through social media. 
 However, there are some inconsistencies in the data that may cause the results to 
 inaccurately reflect the actual situation.
