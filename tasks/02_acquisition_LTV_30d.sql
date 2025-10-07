@@ -4,13 +4,18 @@ Compare 30-day customer value across acquisition channels.
 */
 
 with first_30_days as (
-	select retention_from.user_id,
+	select 
+		retention_from.user_id,
+		retention_from.channel,
 		case 
 			when orders.order_timestamp - retention_from.day_0 <= 30*interval '1 day' then orders.total_amount 
 			else null 
 		end as amount
 	from (
-		select u.user_id, min(us.session_start) as day_0
+		select 
+			u.user_id, 
+			u.acquisition_channel as channel,
+			min(us.session_start) as day_0
 		from users u 
 		left join user_sessions us 
 		on u.user_id = us.user_id 
@@ -20,13 +25,11 @@ with first_30_days as (
 	on retention_from.user_id = orders.user_id
 	) 
 select 
-	users.acquisition_channel as channel, 
+	first_30_days.channel as channel, 
 	round(sum(first_30_days.amount) / count(distinct first_30_days.user_id), 4) as LTV_30d
 from first_30_days
-left join users
-on first_30_days.user_id = users.user_id 
 where amount is not null
-group by users.acquisition_channel 
+group by first_30_days.channel 
 order by LTV_30d desc;
 
 /*
