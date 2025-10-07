@@ -6,7 +6,7 @@ This project explores marketing and user behavior data for an online store. The 
 The study is based on data provided as part of the practical assignment for the Simulative Data Analyst course.
 The source with the task description, explanations, and data is available [here](https://github.com/Krabkvadrat/webinars_data/blob/main/training/sql_metrics/README.md) (in Russian). 
 
-Proceed to the questions and solutions.
+Proceed to the questions and solutions in [tasks](/tasks/) folder.
 
 ### Overview of the assignment
 
