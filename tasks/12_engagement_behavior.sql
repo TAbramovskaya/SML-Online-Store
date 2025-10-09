@@ -4,7 +4,7 @@ Device segmentation: Does user behavior differ between mobile and desktop device
 
 select 
 	device_type, 
-	count(ussession_id) as sessions,
+	count(session_id) as sessions,
 	floor(avg(session_duration_minutes) / 60) || ' hour ' 
 		|| round(mod(avg(session_duration_minutes), 60)) || ' minutes' 
 		as average_duration_minutes
