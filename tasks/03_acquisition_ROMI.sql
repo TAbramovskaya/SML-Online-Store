@@ -9,19 +9,18 @@ The `orders` table has a `campaign_id` field, but its contents (mostly nulls)
 do not allow analyzing ROMI based on it. Therefore, I decided to estimate ROMI 
 by campaigns using the acquisition channel of the user who placed the order. 
 In this case, it is still not possible to evaluate all campaign types due to 
-inconsistencies in the naming. I chose to treat the "search" type as "paid_search", 
-but I could not find similarly obvious mappings for "display" and "organic".
+inconsistencies in the naming. I chose to treat the "search" type as "paid_search".
 */
 
 with spend as (
-	select 
+	select
 		campaign_type as channel,
 		sum(total_spend) as amount
 	from campaigns
 	group by campaign_type
 	),
 	orders_by_channels as (
-	select 
+	select
 		case
 			when users.acquisition_channel like '%search%' then 'search'
 			else users.acquisition_channel
@@ -32,28 +31,38 @@ with spend as (
 	on orders.user_id = users.user_id
 	),
 	revenue as (
-	select 
+	select
 		channel,
 		sum(amount) as amount
 	from orders_by_channels
-	group by channel 
+	group by channel
 	)
-select 
+select
 	coalesce(spend.channel, revenue.channel) as channel,
-	round((revenue.amount - spend.amount)*100 / spend.amount, 4) as "ROMI(%)"
-from spend 
+	round((coalesce(revenue.amount, 0) - coalesce(spend.amount, 0))*100 / coalesce(spend.amount, 100), 4) as "ROMI(%)"
+from spend
 full join revenue
 on spend.channel = revenue.channel
+order by "ROMI(%)" desc;
 
 /*
 Result:
     channel|ROMI(%) |
     -------+--------+
-    email  |427.8926|
+    organic|    null|    
+	email  |427.8926|
     social |-11.0053|
     search |  3.3585|
-    display|        |
-    organic|        |
+    display|    -100|
+
+Since we cannot assess the indirect costs of the "organic" acquisition channel, 
+we will consider it free and therefore the most effective in terms 
+of return on investment. 
+
+For the "display" channel, no users were recorded, which formally makes it 
+completely unprofitable. However, before deciding to discontinue this acquisition 
+channel, it is important to verify whether there was a communication issue or 
+data loss related to this channel.
 
 Such a significantly higher ROMI for user acquisition via email is due to the 
 low costs associated with this type of acquisition, while the revenue across 
