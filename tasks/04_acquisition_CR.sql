@@ -26,7 +26,8 @@ select
 	users.acquisition_channel, 
 	round(min(tc.conversion_rate), 2) as min_CR, 
 	round(max(tc.conversion_rate), 2) as max_CR, 
-	round(avg(tc.conversion_rate), 2) as avg_CR
+	round(avg(tc.conversion_rate), 2) as avg_CR,
+	(percentile_cont(0.5) within group ( order by tc.conversion_rate))::numeric(3, 2) as median_CR
 from users 
 inner join traffic_conversion as tc
 on users.user_id = tc.user_id 
@@ -35,12 +36,12 @@ group by users.acquisition_channel;
 /*
 Result: 
 
-acquisition_channel|min_cr|max_cr|avg_cr|
--------------------+------+------+------+
-email              |  0.05|  0.25|  0.13|
-organic            |  0.07|  0.27|  0.16|
-social             |  0.05|  0.25|  0.15|
-paid_search        |  0.03|  0.20|  0.13|
+acquisition_channel|min_cr|max_cr|avg_cr|median_cr|
+-------------------+------+------+------+---------+
+email              |  0.05|  0.25|  0.13|     0.12|
+organic            |  0.07|  0.27|  0.16|     0.17|
+social             |  0.05|  0.25|  0.15|     0.15|
+paid_search        |  0.03|  0.20|  0.13|     0.14|
 
 The ratio of the number of user orders to the number of user sessions 
 is very consistent across different user acquisition channels. We also 
