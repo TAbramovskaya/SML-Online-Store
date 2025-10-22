@@ -25,4 +25,9 @@ We can assume that the observed difference in usage frequency between
 devices is not related to the quality of our service on different device 
 types, but rather to individual user preferences.
 
+As the next step in analyzing differences in user behavior across devices, 
+we should examine what share of orders is placed from each type of device. 
+This will allow us to indirectly assess the convenience of viewing the cart, 
+placing an order, and completing the payment process on different device types.
+
 */
