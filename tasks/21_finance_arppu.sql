@@ -19,8 +19,7 @@ with monthly_registrations as (
 	select
 		month_id,
 		monthly_count,
-		SUM(monthly_count) over (
-		order by month_id) as running_total
+		sum(monthly_count) over (order by month_id) as running_total
 	from monthly_registrations
 	order by month_id
 	)
